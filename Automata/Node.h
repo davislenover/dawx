@@ -23,6 +23,7 @@ public:
     State getState();
     void addEdge(Edge);
     void removeEdge(Edge);
+    Node* getTransition(char);
 };
 
 #endif

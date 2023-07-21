@@ -1,5 +1,6 @@
 #include "Node.h"
 #include "Edge.h"
+#include "DrainNode.h"
 
 
 /// <summary>Creates a Node object with a given state. Nodes hold Edges for traversal between Nodes</summary>
@@ -38,4 +39,16 @@ void Node::removeEdge(Edge edge) {
         this->edgeList.erase(edgeList.begin() + indexToRemove);
     }
 
+}
+
+/// <summary>Gets the Node (as a pointer) to transition to given a symbol</summary>
+Node* Node::getTransition(char symbol) {
+    for (Edge edge : this->edgeList) {
+        if (edge.isMatch(symbol)) {
+            return edge.getMatchNode();
+        }
+    }
+    // TODO this MUST be deleted off of the Heap!
+    DrainNode* drainNode = new DrainNode();
+    return drainNode;
 }
