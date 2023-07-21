@@ -1,15 +1,14 @@
 #include "Node.h"
 #include "Edge.h"
 
+
+/// <summary>Creates a Node object with a given state. Nodes hold Edges for traversal between Nodes</summary>
+Node::Node(State state) : state{state} {
+}
 /// <summary>Gets the state of the Node, used to determine if a char is accepted or not</summary>
 State Node::getState() {
     return this->state;
 }
-/// <summary>Creates a Node object with a given state. Nodes hold Edges for traversal between Nodes</summary>
-Node::Node(State state) {
-    this->state = state;
-}
-
 /// <summary>Adds an Edge to the Edge vector of the given Node instance. The Edge must contain a unique ID char (symbol)</summary>
 void Node::addEdge(Edge edge) {
     for (Edge edgeToCheck : this->edgeList) {

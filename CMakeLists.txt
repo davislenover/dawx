@@ -8,6 +8,7 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # Add all sub-directories
 add_subdirectory(Automata)
+add_subdirectory(GoogleTests)
 # Specify the main name, specify main.cpp as the source file
 add_executable(main main.cpp)
 # Link subdirectories as libraries (whatever the name of the library is) to the main executable

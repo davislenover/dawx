@@ -9,12 +9,12 @@ private:
     char IDSymbol;
     Node* matchNode;
 public:
-    Edge(char IDSymbol, Node* matchNode);
-    bool isMatch(char symbolToCheck);
+    Edge(char, Node*);
+    bool isMatch(char);
     char getIDSymbol();
     Node* getMatchNode();
     // Overloading equals operator
-    bool operator==(Edge edge);
+    bool operator==(Edge);
 };
 
 #endif

@@ -1,9 +1,7 @@
 #include "Edge.h"
 
 /// <summary>Creates an Edge object. An Edge contains an ID char and a matching Node (pointer).</summary>
-Edge::Edge(char IDSymbol, Node *matchNode) {
-    this->IDSymbol = IDSymbol;
-    this->matchNode = matchNode;
+Edge::Edge(char IDSymbol, Node *matchNode) : IDSymbol{IDSymbol}, matchNode{matchNode} {
 }
 
 /// <summary>Checks if a given input symbol matches the ID char in the Edge object. True if match, false otherwise</summary>
