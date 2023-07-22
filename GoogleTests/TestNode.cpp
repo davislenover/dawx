@@ -1,7 +1,6 @@
 #include "googletest/googletest/include/gtest/gtest.h"
 #include "../Automata/Node.h"
-#include "../Automata/Edge.h"
-#include "../Automata/DrainNode.h"
+#include "../Automata/DFA.h"
 
 TEST(DFATests,NodeStateTest) {
 
@@ -60,5 +59,31 @@ TEST(DFATests,NodeRejectTransitionTest) {
     delete testNode1;
     delete testNode2;
     delete rejectNode;
+
+}
+
+TEST(DFATests,DFAEvaluationTest) {
+
+    // Create a DFA that only accepts "Test" (case-sensitive)
+    Node startNode(REJECT);
+    Node node2(REJECT);
+    Node node3(REJECT);
+    Node node4(REJECT);
+    Node node5(ACCEPT);
+
+    Edge t('T',&node2);
+    Edge e('e',&node3);
+    Edge s('s',&node4);
+    Edge tf('t',&node5);
+
+    startNode.addEdge(t);
+    node2.addEdge(e);
+    node3.addEdge(s);
+    node4.addEdge(tf);
+
+    DFA dfa(startNode);
+    GTEST_ASSERT_TRUE(dfa.evaluate("Test") == ACCEPT);
+    GTEST_ASSERT_TRUE(dfa.evaluate("test") == REJECT);
+    GTEST_ASSERT_TRUE(dfa.evaluate("tes") == REJECT);
 
 }
