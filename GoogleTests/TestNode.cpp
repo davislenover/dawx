@@ -1,6 +1,8 @@
 #include "googletest/googletest/include/gtest/gtest.h"
 #include "../Automata/Node.h"
 #include "../Automata/DFA.h"
+#include "../Automata/DFAFactory.h"
+#include "../Exceptions/UnknownNodeException.h"
 
 TEST(DFATests,NodeStateTest) {
 
@@ -85,5 +87,31 @@ TEST(DFATests,DFAEvaluationTest) {
     GTEST_ASSERT_TRUE(dfa.evaluate("Test") == ACCEPT);
     GTEST_ASSERT_TRUE(dfa.evaluate("test") == REJECT);
     GTEST_ASSERT_TRUE(dfa.evaluate("tes") == REJECT);
+
+}
+
+TEST(DFATests,DFACreationTest) {
+
+    DFAFactory factory;
+
+    std::unordered_map<char,char> transitionMap1;
+    transitionMap1['T'] = '2';
+    factory.addNode('1',REJECT,transitionMap1);
+    std::unordered_map<char,char> transitionMap2;
+    transitionMap1['e'] = '3';
+    factory.addNode('2',REJECT,transitionMap2);
+    std::unordered_map<char,char> transitionMap3;
+    transitionMap1['s'] = '4';
+    factory.addNode('3',REJECT,transitionMap3);
+    std::unordered_map<char,char> transitionMap4;
+    transitionMap1['t'] = '5';
+    factory.addNode('4',REJECT,transitionMap4);
+    std::unordered_map<char,char> transitionMap5;
+    factory.addNode('5',ACCEPT,transitionMap5);
+
+    DFA* newDFA = factory.constructDFA();
+    GTEST_ASSERT_TRUE(newDFA->evaluate("Test") == ACCEPT);
+    GTEST_ASSERT_TRUE(newDFA->evaluate("test") == REJECT);
+    GTEST_ASSERT_TRUE(newDFA->evaluate("tes") == REJECT);
 
 }

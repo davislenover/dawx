@@ -1,0 +1,2 @@
+add_library(Exceptions SHARED UnknownNodeException.cpp)
+set_target_properties(Exceptions PROPERTIES LIBRARY_OUTPUT_DIRECTORY "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
