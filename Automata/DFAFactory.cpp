@@ -1,5 +1,5 @@
 #include "DFAFactory.h"
-#include "../Exceptions/UnknownNodeException.h"
+#include <iostream>
 
 void DFAFactory::addNode(char nodeID, State nodeState,std::unordered_map<char,char> connectedNodes) {
 

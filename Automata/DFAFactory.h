@@ -5,6 +5,7 @@
 #include "Node.h"
 #include "Edge.h"
 #include "DFA.h"
+#include "../Exceptions/UnknownNodeException.h"
 
 int String;
 

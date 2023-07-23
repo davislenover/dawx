@@ -1,9 +1,14 @@
 #include "UnknownNodeException.h"
-#include <string>
+#include <cstring>
 
-UnknownNodeException::UnknownNodeException(std::string unknownNodeId) : unknownNodeId{unknownNodeId}  {};
+UnknownNodeException::UnknownNodeException(char* unknownId) : unknownNodeId(unknownId) {};
 
-const char* UnknownNodeException::what() const throw() {
-    std::string unknown = "Unknown NodeId: " + this->unknownNodeId;
-    return unknown.c_str();
+char *UnknownNodeException::what() {
+    std::string message = "Unknown Node ID: ";
+    message += this->unknownNodeId;
+
+    char* cstr = new char[message.length() + 1];
+    strcpy(cstr,message.c_str());
+    return cstr;
+
 };

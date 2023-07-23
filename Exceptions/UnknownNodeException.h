@@ -5,10 +5,10 @@
 
 class UnknownNodeException : public std::exception {
 private:
-    std::string unknownNodeId;
+   char* unknownNodeId;
 public:
-    UnknownNodeException(std::string);
-    virtual const char* what() const throw();
+    UnknownNodeException(char* unknownId);
+    char* what();
 };
 
 

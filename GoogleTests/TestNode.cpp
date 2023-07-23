@@ -98,13 +98,13 @@ TEST(DFATests,DFACreationTest) {
     transitionMap1['T'] = '2';
     factory.addNode('1',REJECT,transitionMap1);
     std::unordered_map<char,char> transitionMap2;
-    transitionMap1['e'] = '3';
+    transitionMap2['e'] = '3';
     factory.addNode('2',REJECT,transitionMap2);
     std::unordered_map<char,char> transitionMap3;
-    transitionMap1['s'] = '4';
+    transitionMap3['s'] = '4';
     factory.addNode('3',REJECT,transitionMap3);
     std::unordered_map<char,char> transitionMap4;
-    transitionMap1['t'] = '5';
+    transitionMap4['t'] = '5';
     factory.addNode('4',REJECT,transitionMap4);
     std::unordered_map<char,char> transitionMap5;
     factory.addNode('5',ACCEPT,transitionMap5);
