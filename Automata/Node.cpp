@@ -48,3 +48,7 @@ Node* Node::getTransition(char symbol) {
     DrainNode* drainNode = new DrainNode();
     return drainNode;
 }
+
+Node::~Node() {
+    this->edgeList.clear();
+}

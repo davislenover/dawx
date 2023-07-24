@@ -6,12 +6,15 @@
 #include "Edge.h"
 #include "DFA.h"
 #include "../Exceptions/UnknownNodeException.h"
+#include "../MemManagement/MemCollection.h"
 #include <cstdarg>
 
 int String;
 
 class DFAFactory {
 private:
+    MemCollection<Node> nodeMemCollection;
+    MemCollection<Edge> edgeMemCollection;
     std::unordered_map<char,Node*> nodeMap;
     std::unordered_map<char,std::unordered_map<char,char>> edgeMap;
     Node* startNode = NULL;
@@ -30,6 +33,7 @@ public:
     /// @throws UnknownNodeException if any edge transition contains an unknown NodeID
     /// </summary>
     DFA* constructDFA();
+    ~DFAFactory();
 };
 
 

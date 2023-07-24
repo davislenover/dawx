@@ -11,6 +11,8 @@ void DFAFactory::addNode(char nodeID, State nodeState, int numberOfInputs, ...) 
         Node* newNode = new Node(nodeState);
         this->nodeMap[nodeID] = newNode;
         this->edgeMap[nodeID] = connectedNodes;
+        // Add Node to memory collection to keep track of memory
+        this->nodeMemCollection.addObject(newNode);
         // Set startNode if this call to addNode is the first
         if (this->startNode == NULL) {
             this->startNode = newNode;
@@ -73,6 +75,7 @@ void DFAFactory::parseEdges() {
             if (this->nodeMap.contains(gotoNodeID)) {
                 // Create a new edge with the given symbol
                 Edge* newEdge = new Edge(symbol,this->nodeMap[gotoNodeID]);
+                this->edgeMemCollection.addObject(newEdge);
                 // Add edge (de-reference)
                 correspondingNode->addEdge(*newEdge);
             } else {
@@ -86,4 +89,10 @@ void DFAFactory::parseEdges() {
         itForMap++;
     }
 
+}
+
+DFAFactory::~DFAFactory() {
+    // Free all memory created
+    this->nodeMemCollection.killAllObjects();
+    this->edgeMemCollection.killAllObjects();
 }

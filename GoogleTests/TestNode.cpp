@@ -2,7 +2,6 @@
 #include "../Automata/Node.h"
 #include "../Automata/DFA.h"
 #include "../Automata/DFAFactory.h"
-#include "../Exceptions/UnknownNodeException.h"
 
 TEST(DFATests,NodeStateTest) {
 
@@ -109,5 +108,7 @@ TEST(DFATests,DFACreationTest) {
     GTEST_ASSERT_TRUE(newDFA->evaluate("Test") == ACCEPT);
     GTEST_ASSERT_TRUE(newDFA->evaluate("test") == REJECT);
     GTEST_ASSERT_TRUE(newDFA->evaluate("tes") == REJECT);
+
+    delete newDFA;
 
 }
