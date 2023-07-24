@@ -2,7 +2,6 @@
 
 DFA::DFA(Node &startNode) : startNode{startNode} {};
 
-/// <summary>Evaluates a given input string into the DFA instance. If the DFA accepts the String, returns the state ACCEPT. Otherwise, returns REJECT</summary>
 State DFA::evaluate(std::string stringToEvaluate) {
     // Evaluate from start node (to set current node)
     this->currentNode = startNode.getTransition(stringToEvaluate[0]);

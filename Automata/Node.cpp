@@ -2,15 +2,13 @@
 #include "Edge.h"
 #include "DrainNode.h"
 
-
-/// <summary>Creates a Node object with a given state. Nodes hold Edges for traversal between Nodes</summary>
 Node::Node(State state) : state{state} {
 }
-/// <summary>Gets the state of the Node, used to determine if a char is accepted or not</summary>
+
 State Node::getState() {
     return this->state;
 }
-/// <summary>Adds an Edge to the Edge vector of the given Node instance. The Edge must contain a unique ID char (symbol)</summary>
+
 void Node::addEdge(Edge edge) {
     for (Edge edgeToCheck : this->edgeList) {
         if (edgeToCheck.getIDSymbol() == edge.getIDSymbol()) {
@@ -20,7 +18,6 @@ void Node::addEdge(Edge edge) {
     this->edgeList.push_back(edge);
 }
 
-/// <summary>Removes an Edge from the Node. Checks for an ID char match to remove</summary>
 void Node::removeEdge(Edge edge) {
 
     // Find position of Edge
@@ -41,7 +38,6 @@ void Node::removeEdge(Edge edge) {
 
 }
 
-/// <summary>Gets the Node (as a pointer) to transition to given a symbol</summary>
 Node* Node::getTransition(char symbol) {
     for (Edge edge : this->edgeList) {
         if (edge.isMatch(symbol)) {

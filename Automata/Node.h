@@ -19,10 +19,15 @@ private:
     std::vector<Edge> edgeList;
 
 public:
+    /// <summary>Creates a Node object with a given state. Nodes hold Edges for traversal between Nodes</summary>
     Node(State state);
+    /// <summary>Gets the state of the Node, used to determine if a char is accepted or not</summary>
     State getState();
+    /// <summary>Adds an Edge to the Edge vector of the given Node instance. The Edge must contain a unique ID char (symbol)</summary>
     void addEdge(Edge);
+    /// <summary>Removes an Edge from the Node. Checks for an ID char match to remove</summary>
     void removeEdge(Edge);
+    /// <summary>Gets the Node (as a pointer) to transition to given a symbol</summary>
     Node* getTransition(char);
 };
 

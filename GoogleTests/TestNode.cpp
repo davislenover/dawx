@@ -94,20 +94,16 @@ TEST(DFATests,DFACreationTest) {
 
     DFAFactory factory;
 
-    std::unordered_map<char,char> transitionMap1;
-    transitionMap1['T'] = '2';
-    factory.addNode('1',REJECT,transitionMap1);
-    std::unordered_map<char,char> transitionMap2;
-    transitionMap2['e'] = '3';
-    factory.addNode('2',REJECT,transitionMap2);
-    std::unordered_map<char,char> transitionMap3;
-    transitionMap3['s'] = '4';
-    factory.addNode('3',REJECT,transitionMap3);
-    std::unordered_map<char,char> transitionMap4;
-    transitionMap4['t'] = '5';
-    factory.addNode('4',REJECT,transitionMap4);
-    std::unordered_map<char,char> transitionMap5;
-    factory.addNode('5',ACCEPT,transitionMap5);
+
+    char transitionMap1[] = {'T','2'};
+    factory.addNode('1',REJECT,1,transitionMap1);
+    char transitionMap2[] = {'e','3'};
+    factory.addNode('2',REJECT,1,transitionMap2);
+    char transitionMap3[] = {'s','4'};
+    factory.addNode('3',REJECT,1,transitionMap3);
+    char transitionMap4[] = {'t','5'};
+    factory.addNode('4',REJECT,1,transitionMap4);
+    factory.addNode('5',ACCEPT,0);
 
     DFA* newDFA = factory.constructDFA();
     GTEST_ASSERT_TRUE(newDFA->evaluate("Test") == ACCEPT);

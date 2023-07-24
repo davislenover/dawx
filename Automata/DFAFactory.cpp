@@ -1,7 +1,11 @@
 #include "DFAFactory.h"
 #include <iostream>
 
-void DFAFactory::addNode(char nodeID, State nodeState,std::unordered_map<char,char> connectedNodes) {
+void DFAFactory::addNode(char nodeID, State nodeState, int numberOfInputs, ...) {
+
+    va_list args;
+    va_start(args,numberOfInputs);
+    std::unordered_map<char, char> connectedNodes = parseEdgeTransitions(numberOfInputs,args);
 
     if (!this->nodeMap.contains(nodeID)) {
         Node* newNode = new Node(nodeState);
@@ -12,6 +16,28 @@ void DFAFactory::addNode(char nodeID, State nodeState,std::unordered_map<char,ch
             this->startNode = newNode;
         }
     }
+}
+
+std::unordered_map<char, char> DFAFactory::parseEdgeTransitions(int numberOfInputs, va_list args) {
+
+    // Initialize variable arguments
+
+    std::unordered_map<char,char> returnMap;
+
+    // Loop through all inputs
+    for (int index = 0; index < numberOfInputs; index++) {
+
+        // Each time va_arg is called on args, the current value is given to edgeDef as a char pointer (from arg_ptr) and then arg_ptr is increased to the next argument in the list
+        char* edgeDef = va_arg(args, char*);
+        // Parse out both the symbol and which nodeID to transition to
+        // Pointer arithmetic, assume that there are two elements within this array object, get the first element (i.e. at the base address)
+        char symbol = edgeDef[0];
+        // Then increment the pointer to the next memory address to get the next element (base address + 1)
+        char gotoNodeID = edgeDef[1];
+        // Add to map
+        returnMap[symbol] = gotoNodeID;
+    }
+    return returnMap;
 }
 
 DFA* DFAFactory::constructDFA() {
