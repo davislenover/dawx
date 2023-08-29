@@ -8,6 +8,6 @@ A simple programming language
 
 | Id  | TODO title                                          | Who?               | Start      | End        | Status                                                              |
 |:---:|-----------------------------------------------------|--------------------|------------|------------|---------------------------------------------------------------------|
-| F01 | Multi-purpose DFA Library | Davis Lenover      | 2023-05-18 | 2023-05-24 | D (will expand as see fit)                                                                   |
+| F01 | Multi-purpose DFA Library | Davis Lenover      | 2023-05-18 | 2023-05-24 | D (will expand as seen fit)                                                                   |
 | F02 | Memory Collection      | 2023-05-24 | NA | S                                                                   |
 
