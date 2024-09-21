@@ -1,0 +1,2 @@
+add_library(Lexical SHARED Token.cpp
+        TokenType.h)

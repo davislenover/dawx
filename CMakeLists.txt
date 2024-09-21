@@ -11,6 +11,8 @@ add_subdirectory(Automata)
 add_subdirectory(Exceptions)
 add_subdirectory(MemManagement)
 add_subdirectory(GoogleTests)
+# Directory for lexical analysis of dawx file
+add_subdirectory(Lexical)
 # Specify the main name, specify main.cpp as the source file
 add_executable(main main.cpp)
 # Link subdirectories as libraries (whatever the name of the library is) to the main executable
