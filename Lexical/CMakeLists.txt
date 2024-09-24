@@ -1,2 +1,1 @@
-add_library(Lexical SHARED Token.cpp
-        TokenType.h)
+add_library(Lexical SHARED Token.cpp TokenType.h)
