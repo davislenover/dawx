@@ -15,7 +15,8 @@ private:
     // Pointer to the current element
     char* curElementPointer;
     char* startElement;
-    char* endPtr = 0;
+    // Designating nullptr as end of iterator
+    char* endChar = nullptr;
 public:
     // CodeStream is an iterator, C++17 deprecates std::iterator thus explicitly define typedefs
     // "using" to say "use iterator_category and replace with std::input_iterator_tag"
@@ -43,4 +44,7 @@ public:
     CodeStream end();
 
     CodeStream(std::string pathToFile);
+    // Copy constructor
+    CodeStream(const CodeStream& codeStreamToCopy);
+    ~CodeStream();
 };
