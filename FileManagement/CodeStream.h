@@ -1,6 +1,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <memory>
 
 #define DAWX_FILE_EXT ".dawx"
 #define DAWX_FILE_LEN 5
@@ -11,12 +12,12 @@ class CodeStream {
 private:
     const std::string filePath;
     // File input stream
-    std::ifstream* fileObj;
-    // Pointer to the current element
-    char* curElementPointer;
-    char* startElement;
-    // Designating nullptr as end of iterator
-    char* endChar = nullptr;
+    std::shared_ptr<std::ifstream> fileObj;
+    // Current element and start element
+    char curElement;
+    char startElement;
+    bool isEndOfIterator = false;
+
 public:
     // CodeStream is an iterator, C++17 deprecates std::iterator thus explicitly define typedefs
     // "using" to say "use iterator_category and replace with std::input_iterator_tag"
