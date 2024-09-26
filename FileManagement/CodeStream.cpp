@@ -1,18 +1,17 @@
 #include "CodeStream.h"
 #include "CodeCharacter.h"
-
 #include <memory>
 
 CodeStream::CodeStream(std::string pathToFile) : filePath(pathToFile) {
     // Check if the file extension is ".dawx"
-    if (this->filePath.substr(this->filePath.length()-DAWX_FILE_LEN,std::string::npos).compare(DAWX_FILE_EXT)) {
+    if (this->filePath.substr(this->filePath.length()-DAWX_FILE_LEN,std::string::npos).compare(DAWX_FILE_EXT) == 0) {
         // If so, attempt to open file
         // Create a shared pointer, the template type is the object to create and the parameters are the parameters to the constructor
         this->fileObj = std::make_shared<std::ifstream>(this->filePath);
         // Check if no error flags were set during opening of file
         if (!this->fileObj->fail() && !this->fileObj->eof()) {
             // Assign first character
-            this->fileObj->get(this->startElement);
+            this->startElement= this->fileObj->get();
             this->curElement = this->startElement;
         }
     }
@@ -29,15 +28,16 @@ CodeStream::~CodeStream() {
 
 CodeStream& CodeStream::operator++() {
     // Increment to next character (i.e., get next character)
-    if (this->fileObj && !this->fileObj->eof()) {
-        this->fileObj->get(this->curElement);
-        // Then return
-        return *this;
-    } else {
-        // Set to end of iterator
-        this->isEndOfIterator = true;
-        return *this;
+    if (this->fileObj.get()) {
+        this->curElement = this->fileObj->get();
+        if (this->curElement != std::ifstream::traits_type::eof()) {
+            // Then return
+            return *this;
+        }
     }
+    // Set to end of iterator
+    this->isEndOfIterator = true;
+    return *this;
 }
 
 CodeStream CodeStream::operator++(int) {
@@ -45,14 +45,15 @@ CodeStream CodeStream::operator++(int) {
     // Essentially, return a copy of this iterator (call copy constructor)
     CodeStream returnCopy(*this);
     // Then increment this and return copy
-    if (this->fileObj && !this->fileObj->eof()) {
-        this->fileObj->get(this->curElement);
-        return returnCopy;
-    } else {
-        // Set to end of iterator
-        this->isEndOfIterator = true;
-        return returnCopy;
+    if (this->fileObj.get()) {
+        this->curElement = this->fileObj->get();
+        if (this->curElement != std::ifstream::traits_type::eof()) {
+            return returnCopy;
+        }
     }
+    // Set to end of iterator
+    this->isEndOfIterator = true;
+    return returnCopy;
 }
 
 CodeStream::CodeStream(const CodeStream &codeStreamToCopy) : filePath(codeStreamToCopy.filePath), fileObj(codeStreamToCopy.fileObj) {
@@ -62,23 +63,26 @@ CodeStream::CodeStream(const CodeStream &codeStreamToCopy) : filePath(codeStream
 
 bool CodeStream::operator!=(const CodeStream &other) const {
     // For two CodeStream objects to be equal the following must be true
-    // 1. They share the same pointer to the same file input stream
+    // 1. They share the same file path
     // 2. Their current element pointers must be the same and the character they store must be the same
-    return this->fileObj.get() == other.fileObj.get() && this->curElement == other.curElement && this->isEndOfIterator == other.isEndOfIterator;
+    // TODO stronger equality checks
+    return !(this->filePath.compare(other.filePath) == 0 && this->curElement == other.curElement && this->isEndOfIterator == other.isEndOfIterator);
 }
 
 CodeCharacter& CodeStream::operator*() const {
     // Construct CodeCharacter
-    CodeCharacter* returnCharacter = new CodeCharacter(this->curElement, this->fileObj->gcount());
+    // TODO set offset
+    CodeCharacter* returnCharacter = new CodeCharacter(this->curElement, 0);
     return *returnCharacter;
 }
 
 CodeStream CodeStream::begin() {
-    return *this;
+    return CodeStream(this->filePath);
 }
 
 CodeStream CodeStream::end() {
     CodeStream returnEnd(*this);
+    returnEnd.curElement = std::ifstream::traits_type::eof();
     returnEnd.isEndOfIterator = true;
     return returnEnd;
 }

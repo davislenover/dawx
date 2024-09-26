@@ -1,8 +1,8 @@
 class CodeCharacter {
 private:
-    const char character;
+    char character;
     // Offset from beginning of file
-    const int offset;
+    int offset;
 public:
     CodeCharacter(char readCharacter, int offsetFromStart) : character(readCharacter), offset(offsetFromStart) {};
 
