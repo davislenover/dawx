@@ -12,6 +12,7 @@ CodeStream::CodeStream(std::string pathToFile) : filePath(pathToFile) {
         if (!this->fileObj->fail() && !this->fileObj->eof()) {
             // Assign first character
             this->startElement= this->fileObj->get();
+            this->offsetFromStart++;
             this->curElement = this->startElement;
         }
     }
@@ -30,6 +31,10 @@ CodeStream& CodeStream::operator++() {
     // Increment to next character (i.e., get next character)
     if (this->fileObj.get()) {
         this->curElement = this->fileObj->get();
+        if (this->offsetFromStart == INT_MAX) {
+            this->offsetLoops++;
+        }
+        this->offsetFromStart++;
         if (this->curElement != std::ifstream::traits_type::eof()) {
             // Then return
             return *this;
@@ -47,6 +52,10 @@ CodeStream CodeStream::operator++(int) {
     // Then increment this and return copy
     if (this->fileObj.get()) {
         this->curElement = this->fileObj->get();
+        if (this->offsetFromStart == INT_MAX) {
+            this->offsetLoops++;
+        }
+        this->offsetFromStart++;
         if (this->curElement != std::ifstream::traits_type::eof()) {
             return returnCopy;
         }
@@ -56,7 +65,8 @@ CodeStream CodeStream::operator++(int) {
     return returnCopy;
 }
 
-CodeStream::CodeStream(const CodeStream &codeStreamToCopy) : filePath(codeStreamToCopy.filePath), fileObj(codeStreamToCopy.fileObj) {
+CodeStream::CodeStream(const CodeStream &codeStreamToCopy) : filePath(codeStreamToCopy.filePath), fileObj(codeStreamToCopy.fileObj),
+offsetFromStart(codeStreamToCopy.offsetFromStart), offsetLoops(codeStreamToCopy.offsetLoops) {
     this->startElement = codeStreamToCopy.startElement;
     this->curElement = codeStreamToCopy.curElement;
 }
@@ -65,14 +75,13 @@ bool CodeStream::operator!=(const CodeStream &other) const {
     // For two CodeStream objects to be equal the following must be true
     // 1. They share the same file path
     // 2. Their current element pointers must be the same and the character they store must be the same
-    // TODO stronger equality checks
+    // Note, files will contain the same character so this should only (at least for now) be used to determine end of iterator
     return !(this->filePath.compare(other.filePath) == 0 && this->curElement == other.curElement && this->isEndOfIterator == other.isEndOfIterator);
 }
 
 CodeCharacter& CodeStream::operator*() const {
     // Construct CodeCharacter
-    // TODO set offset
-    CodeCharacter* returnCharacter = new CodeCharacter(this->curElement, 0);
+    CodeCharacter* returnCharacter = new CodeCharacter(this->curElement, this->offsetFromStart, this->offsetLoops);
     return *returnCharacter;
 }
 

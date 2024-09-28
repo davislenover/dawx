@@ -6,8 +6,10 @@ include_directories(${gtest_SOURCE_DIR}/include ${gtest_SOURCE_DIR})
 # TestNode.cpp needs Automata lib to function, thus include it's directory
 include_directories(../Automata)
 include_directories(../MemManagement)
+include_directories(../FileManagement)
 # 'Google_Tests_run' is the target name
 # 'TestNode.cpp' is source file with tests
-add_executable(Google_Tests_run TestNode.cpp)
+add_executable(Google_Tests_run TestNode.cpp
+        TestCodeStream.cpp)
 # Add Google Test libraries as well as Automata
-target_link_libraries(Google_Tests_run gtest gtest_main Automata)
+target_link_libraries(Google_Tests_run gtest gtest_main Automata FileManagement)

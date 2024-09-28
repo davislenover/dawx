@@ -17,6 +17,11 @@ private:
     char curElement;
     char startElement;
     bool isEndOfIterator = false;
+    // Offset from start, 0 means at start (no characters read)
+    int offsetFromStart = 0;
+    // Possible for offset to reach maximum integer count and thus overflow, this integer will indicate how many
+    // overflows which have occurred
+    int offsetLoops = 0;
 
 public:
     // CodeStream is an iterator, C++17 deprecates std::iterator thus explicitly define typedefs
