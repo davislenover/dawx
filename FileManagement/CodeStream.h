@@ -16,12 +16,13 @@ private:
     // Current element and start element
     char curElement;
     char startElement;
-    bool isEndOfIterator = false;
     // Offset from start, 0 means at start (no characters read)
     int offsetFromStart = 0;
     // Possible for offset to reach maximum integer count and thus overflow, this integer will indicate how many
     // overflows which have occurred
     int offsetLoops = 0;
+    // Increment to next character in file stream
+    void increment();
 
 public:
     // CodeStream is an iterator, C++17 deprecates std::iterator thus explicitly define typedefs
@@ -48,6 +49,9 @@ public:
     CodeStream begin();
     // Returns an iterator pointing one past the end
     CodeStream end();
+
+    // Get next character without incrementing iterator
+    CodeCharacter peek();
 
     CodeStream(std::string pathToFile);
     // Copy constructor

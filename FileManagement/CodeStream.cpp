@@ -1,6 +1,7 @@
 #include "CodeStream.h"
 #include "CodeCharacter.h"
 #include <memory>
+# define END_OF_FILE std::ifstream::traits_type::eof()
 
 CodeStream::CodeStream(std::string pathToFile) : filePath(pathToFile) {
     // Check if the file extension is ".dawx"
@@ -29,19 +30,7 @@ CodeStream::~CodeStream() {
 
 CodeStream& CodeStream::operator++() {
     // Increment to next character (i.e., get next character)
-    if (this->fileObj.get()) {
-        this->curElement = this->fileObj->get();
-        if (this->offsetFromStart == INT_MAX) {
-            this->offsetLoops++;
-        }
-        this->offsetFromStart++;
-        if (this->curElement != std::ifstream::traits_type::eof()) {
-            // Then return
-            return *this;
-        }
-    }
-    // Set to end of iterator
-    this->isEndOfIterator = true;
+    this->increment();
     return *this;
 }
 
@@ -50,18 +39,7 @@ CodeStream CodeStream::operator++(int) {
     // Essentially, return a copy of this iterator (call copy constructor)
     CodeStream returnCopy(*this);
     // Then increment this and return copy
-    if (this->fileObj.get()) {
-        this->curElement = this->fileObj->get();
-        if (this->offsetFromStart == INT_MAX) {
-            this->offsetLoops++;
-        }
-        this->offsetFromStart++;
-        if (this->curElement != std::ifstream::traits_type::eof()) {
-            return returnCopy;
-        }
-    }
-    // Set to end of iterator
-    this->isEndOfIterator = true;
+    this->increment();
     return returnCopy;
 }
 
@@ -76,7 +54,7 @@ bool CodeStream::operator!=(const CodeStream &other) const {
     // 1. They share the same file path
     // 2. Their current element pointers must be the same and the character they store must be the same
     // Note, files will contain the same character so this should only (at least for now) be used to determine end of iterator
-    return !(this->filePath.compare(other.filePath) == 0 && this->curElement == other.curElement && this->isEndOfIterator == other.isEndOfIterator);
+    return !(this->filePath.compare(other.filePath) == 0 && this->curElement == other.curElement);
 }
 
 CodeCharacter& CodeStream::operator*() const {
@@ -91,9 +69,30 @@ CodeStream CodeStream::begin() {
 
 CodeStream CodeStream::end() {
     CodeStream returnEnd(*this);
-    returnEnd.curElement = std::ifstream::traits_type::eof();
-    returnEnd.isEndOfIterator = true;
+    returnEnd.curElement = END_OF_FILE;
     return returnEnd;
+}
+
+CodeCharacter CodeStream::peek() {
+    if (this->fileObj.get()) {
+        char nextChar = this->fileObj->peek();
+        return  this->offsetFromStart + 1 != INT_MAX ? CodeCharacter(nextChar, offsetFromStart+1, 0)
+        : CodeCharacter(nextChar, offsetFromStart+1, offsetLoops+1);
+    }
+    return CodeCharacter(END_OF_FILE, 0, 0);
+}
+
+void CodeStream::increment() {
+    if (this->fileObj.get() && this->curElement != END_OF_FILE) {
+        this->curElement = this->fileObj->get();
+        if (this->offsetFromStart == INT_MAX) {
+            this->offsetLoops++;
+        }
+        this->offsetFromStart++;
+    } else {
+        // Default to end of file is file object pointer is invalid
+        this->curElement = END_OF_FILE;
+    }
 }
 
 
