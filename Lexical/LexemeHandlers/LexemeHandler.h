@@ -1,5 +1,5 @@
-#include "Token.h"
-#include "../FileManagement/CodeStream.h"
+#include "../Token.h"
+#include "../../FileManagement/CodeStream.h"
 
 class LexemeHandler {
 private:
@@ -8,6 +8,6 @@ protected:
     void setNextHandler(LexemeHandler* handler);
     LexemeHandler* getNextHandler();
 public:
-    virtual TokenType getIDTokenType() = 0;
+    virtual TokenType getIDTokenType(int tokenIndex = 0) = 0;
     virtual Token generateToken(CodeCharacter curCharacter, CodeStream stream) = 0;
 };
