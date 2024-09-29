@@ -9,5 +9,5 @@ protected:
     LexemeHandler* getNextHandler();
 public:
     virtual TokenType getIDTokenType(int tokenIndex = 0) = 0;
-    virtual Token generateToken(CodeCharacter curCharacter, CodeStream stream) = 0;
+    virtual Token generateToken(CodeStream* stream) = 0;
 };

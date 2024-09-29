@@ -5,7 +5,8 @@ TokenType SingleCharacterHandler::getIDTokenType(int tokenIndex) {
     return this->generatedTokens[tokenIndex];
 }
 
-Token SingleCharacterHandler::generateToken(CodeCharacter curCharacter, CodeStream stream) {
+Token SingleCharacterHandler::generateToken(CodeStream* stream) {
+    CodeCharacter curCharacter = *(*stream);
     char character = curCharacter.getCharacter();
     if (character == '(') {
         return Token(TokenType::LEFT_PAREN,"(",curCharacter.getOffset());
@@ -26,4 +27,6 @@ Token SingleCharacterHandler::generateToken(CodeCharacter curCharacter, CodeStre
     } else if (character == ',') {
         return Token(TokenType::COMMA,",",curCharacter.getOffset());
     }
+    // If failed, pass stream to next handler
+    return this->getNextHandler()->generateToken(stream);
 }

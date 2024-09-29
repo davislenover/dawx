@@ -7,5 +7,5 @@ private:
                                     TokenType::SEMICOLON, TokenType::PERIOD, TokenType::COMMA};
 public:
     TokenType getIDTokenType(int tokenIndex = 0) override;
-    Token generateToken(CodeCharacter curCharacter, CodeStream stream) override;
+    Token generateToken(CodeStream* stream) override;
 };
